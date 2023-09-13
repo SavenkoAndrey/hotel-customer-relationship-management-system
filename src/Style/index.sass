@@ -1,0 +1,52 @@
+// defauld style 
+
+$primary-color: #007bff
+$secondary-color: #ff6c00
+
+body
+  font-family: Arial, sans-serif
+  background-color: #f0f0f0
+  color: #333
+  margin: 0
+  padding: 0
+
+.container
+  max-width: 1200px
+  margin: 0 auto
+  padding: 20px
+
+.header
+  background-color: $primary-color
+  color: #fff
+  padding: 10px
+
+.nav
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      display: inline
+      margin-right: 10px
+
+      a
+        text-decoration: none
+        color: #fff
+
+        &:hover
+          text-decoration: underline
+
+.section
+  padding: 20px
+
+.button
+  display: inline-block
+  padding: 10px 20px
+  background-color: $secondary-color
+  color: #fff
+  border: none
+  cursor: pointer
+
+  &:hover
+    background-color: darken($secondary-color, 10%)
