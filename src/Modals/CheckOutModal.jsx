@@ -10,7 +10,7 @@ const CheckOutModal = ({ visible, onCancel }) => {
   // get rooms data
   const { roomId } = useParams();
 
-  // getRoooms Info for a Room number
+  // getRoooms Info for a Room`s number
   const rooms = useSelector((state) => state.roomsData.rooms);
 
   const roomNumber = rooms.find((room) => room.id === roomId);
