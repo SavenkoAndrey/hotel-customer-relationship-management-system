@@ -1,7 +1,6 @@
 import { all } from "redux-saga/effects";
-import { userWatcher } from "./userSaga";
-import { watchCloseNotification } from './saga';
+import { watchLoadRoomData, watchLoadUserData } from "./saga";
 
 export function* rootWatcher() {
-  yield all([userWatcher(), watchCloseNotification()])
+  yield all([watchLoadUserData(), watchLoadRoomData()]);
 }

@@ -1,41 +1,52 @@
-import { put, takeEvery, call } from 'redux-saga/effects';
-import {
-  FETCH_USER,
-  LOAD_USER_DATA_SUCCESS,
-  LOAD_USER_DATA_FAILURE,
-  FETCH_ROOM,
-  LOAD_ROOM_DATA_SUCCESS,
-  LOAD_ROOM_DATA_FAILURE,
-} from './actions';
+import { put, call, takeLatest } from "redux-saga/effects";
 
-import { db } from '../../../DataBase/firebase';
-import { collection } from 'firebase/firestore/lite';
+import { db } from "../../../DataBase/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { fetchUsersFailure, fetchUsersSuccess } from "./userReducer";
+import { fetchRoomFailure, fetchRoomSuccess } from "./roomReducer";
+import { FETCH_ROOM, FETCH_USER } from "./actions";
 
-// Replace 'fetchUserDataFromFirebase' with your actual Firebase data loading function.
+
 function* loadUserData() {
+
   try {
-    const userData = yield call(collection(db, 'Accounts'));
-    yield put({ type: LOAD_USER_DATA_SUCCESS, payload: userData });
+    const users = [];
+    const fetchUsersRef = yield call(getDocs, collection(db, "Accounts"));
+    
+    fetchUsersRef.forEach((doc) => {
+      users.push({...doc.data(), id: doc.id });
+    });
+    
+    yield put(fetchUsersSuccess(users));
+    // console.log(users);
   } catch (error) {
-    yield put({ type: LOAD_USER_DATA_FAILURE, error });
+    yield put(fetchUsersFailure(error));
   }
 }
 
-export function* watchLoadUserData() {
-  yield takeEvery(FETCH_USER, loadUserData);
-}
-
-// for loading room data 
+// for loading room data
 
 function* loadRoomData() {
   try {
-    const roomData = yield call(collection(db, 'Rooms'));
-    yield put({ type: LOAD_ROOM_DATA_SUCCESS, payload: roomData });
+    const fetchRoomRef = yield call(getDocs, collection(db, 'Rooms'));
+
+    const roomData = [];
+    fetchRoomRef.forEach((doc) => {
+      roomData.push({...doc.data(), id: doc.id});
+    });
+    yield put(fetchRoomSuccess(roomData));
   } catch (error) {
-    yield put({ type: LOAD_ROOM_DATA_FAILURE, error });
+    yield put(fetchRoomFailure(error));
   }
 }
 
 export function* watchLoadRoomData() {
-  yield takeEvery(FETCH_ROOM, loadRoomData);
+  yield takeLatest(FETCH_ROOM, loadRoomData);
 }
+export function* watchLoadUserData() {
+  yield takeLatest(FETCH_USER, loadUserData);
+}
+
+
+
+
