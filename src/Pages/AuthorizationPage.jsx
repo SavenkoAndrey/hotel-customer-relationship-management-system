@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Checkbox, Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { collection, doc, setDoc } from "firebase/firestore/lite";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../DataBase/firebase";
 import useAuth from "../Hooks/useAuth";
 import Loading from "../Components/Loading";
@@ -117,7 +117,7 @@ const AuthorizationPage = () => {
         >
           <Form.Item
             className="authorization-form-input"
-            label="Username"
+            label="Username:"
             name="username"
             rules={[
               {
@@ -134,7 +134,7 @@ const AuthorizationPage = () => {
 
           <Form.Item
             className="authorization-form-input"
-            label="Password"
+            label="Password:"
             name="password"
             rules={[
               {
