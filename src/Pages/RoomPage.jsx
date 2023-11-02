@@ -70,19 +70,16 @@ const RoomPage = () => {
       const colRef = collection(db, "Rooms");
       const docRef = doc(colRef, roomInfo.id);
 
-      // for real time db 
+      // for real time db
       onSnapshot(docRef, (doc) => {
         const updatedRoomsInformation = [];
         updatedRoomsInformation.push({ ...doc.data(), id: doc.id });
 
         setIsUpdataData(true);
         setRoomsUpdatedData(updatedRoomsInformation);
-        console.log(updatedRoomsInformation);
       });
     }
   }, [isUpdataData, roomInfo]);
-
-  console.log(roomsUpdatedData);
 
   // Modal
   const openCheckInModal = () => {

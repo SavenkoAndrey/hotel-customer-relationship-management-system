@@ -15,7 +15,6 @@ const CheckOutModal = ({ visible, onCancel }) => {
 
   const roomNumber = rooms.find((room) => room.id === roomId);
 
-  console.log(roomNumber);
   const onFinish = async () => {
     const CollectionRef = collection(db, "Rooms");
     const userDocRef = doc(CollectionRef, roomId);

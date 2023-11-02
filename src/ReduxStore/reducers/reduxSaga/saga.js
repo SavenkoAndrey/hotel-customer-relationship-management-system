@@ -18,7 +18,6 @@ function* loadUserData() {
     });
     
     yield put(fetchUsersSuccess(users));
-    // console.log(users);
   } catch (error) {
     yield put(fetchUsersFailure(error));
   }

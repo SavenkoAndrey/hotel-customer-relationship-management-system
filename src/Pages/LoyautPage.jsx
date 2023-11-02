@@ -13,7 +13,12 @@ import Loading from "../Components/Loading";
 import TypeFilterModal from "../Modals/TypeFilterModal";
 import MainFilterModal from "../Modals/MainFilterModal";
 import { useNavigate } from "react-router-dom";
-import { collection, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../DataBase/firebase";
 
 // pages
@@ -93,9 +98,34 @@ const LoyautPage = () => {
         });
         setIsUpdataData(true);
         setRoomsUpdatedData(updatedRoomsInformation);
-        console.log(updatedRoomsInformation);
       });
     }
+
+    // if checkInDate less or equal current data
+
+    roomsUpdatedData.map((room) => {
+      const currentDate = new Date();
+      const CollectionRef = collection(db, "Rooms");
+      const userDocRef = doc(CollectionRef, room.id);
+      const checkInDate = new Date(room.checkInDate);
+
+      console.log(currentDate, checkInDate);
+
+      if (currentDate >= checkInDate) {
+        try {
+          setDoc(
+            userDocRef,
+            { guest: "", isCheckedIn: false, checkInDate: null },
+            { merge: true }
+          );
+          console.log("All rooms are update");
+        } catch (error) {
+          console.error("Something wrong: " + error);
+        }
+      }
+      return roomsUpdatedData;
+    });
+
     const filteredData = roomsUpdatedData.filter((room) => {
       let isRoomValid = true;
 
@@ -178,7 +208,6 @@ const LoyautPage = () => {
 
     setSelectedRoomType(chooseType);
     setIsTypeFilterModalVisible(false);
-    console.log("Selected: ", chooseType);
   };
 
   // choose the all of filters
